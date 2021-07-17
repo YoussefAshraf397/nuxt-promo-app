@@ -23,11 +23,13 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@/assets/scss/main.scss'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {src: '~/plugins/filters'}
   ],
   /*
   ** Nuxt.js modules
@@ -42,6 +44,9 @@ module.exports = {
   */
   axios: {
   },
+  serverMiddleware: [
+    '~/server/routes/index'
+  ],
   /*
   ** Build configuration
   */
