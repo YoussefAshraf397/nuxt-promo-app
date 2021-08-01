@@ -12,32 +12,38 @@
             <form>
               <div class="field">
                 <div class="control">
-                  <input class="input is-large"
-                         type="email"
-                         placeholder="Your Email"
-                         autofocus=""
-                         autocomplete="email">
-                  <!-- <div class="form-error">
-                    <span class="help is-danger">Email is required</span>
-                    <span class="help is-danger">Email address is not valid</span>
-                  </div> -->
+                  <input 
+                    v-model="form.email"
+                    @blur="$v.form.email.$touch()"
+                    class="input is-large"
+                    type="email"
+                    placeholder="Your Email"
+                    autofocus=""
+                    autocomplete="email">
+                  <div v-if="$v.form.email.$error" class="form-error" >
+                    <span v-if="!$v.form.email.required" class="help is-danger">Email is required</span>
+                    <span v-if="!$v.form.email.emailValidator" class="help is-danger">Email address is not valid</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
                 <div class="control">
                   <input
+                    v-model="form.password"
+                    @blur="$v.form.password.$touch()"
                     class="input is-large"
                     type="password"
-                    placeholder="Your Password"
+                     placeholder="Your Password"
                     autocomplete="current-password">
-                  <!-- <div class="form-error">
-                    <span class="help is-danger">Password is required</span>
-                  </div> -->
+                  <div  v-if="$v.form.password.$error" class="form-error">
+                    <span v-if="!$v.form.password.required" class="help is-danger">Password is required</span>
+                  </div>
                 </div>
               </div>
               <!-- Login Button -->
               <button
-                @click.prevent="() => {}"
+                @click.prevent="login"
+                :disabled="$v.form.$invalid"
                 class="button is-block is-info is-large is-fullwidth">
                 Login
               </button>
@@ -54,6 +60,49 @@
     </div>
   </section>
 </template>
+
+<script>
+import { required, email } from 'vuelidate/lib/validators'
+export default {
+  
+  middleware: 'guest',
+
+  data() {
+    return {
+      form: {
+        email: null,
+        password: null
+      }
+    }
+  },
+  validations: {
+    form: {
+      email: {
+        emailValidator: email,
+        required
+      },
+      password: {
+        required
+      }
+    }
+  },
+  computed: {
+    isFormValid() {
+      return !this.$v.$invalid
+    }
+  },
+  methods: {
+    login() {
+      this.$v.form.$touch()
+      if (this.isFormValid) {
+              this.$store.dispatch('auth/login', this.form)
+               .then(() => this.$router.push('/'))
+              .catch(() => this.$toasted.error('Wrong email or password', {duration: 3000}))
+            }
+      }
+  }
+}
+</script>
 
 <style scoped>
   .hero.is-success {
