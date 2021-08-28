@@ -37,14 +37,14 @@
                   <div class="columns">
                     <div class="column is-narrow">
                       <figure class="image is-4by2 is-128x128">
-                        <img :src="'https://i.udemycdn.com/course/750x422/2381802_d90c_3.jpg'">
+                        <img :src="course.image || 'https://via.placeholder.com/150'">
                       </figure>
                     </div>
                     <div class="column">
                       <p class="title">{{course.title}}</p>
-                      <p class="subtitle">{{course.subtitle}}</p>
+                      <p class="subtitle">{{course.subtitle || 'No subtitle provided yet'}}</p>
                       <span class="tag"
-                            :class="'is-success'">{{course.status}}</span>
+                            :class="createStatusClass(course.status)">{{course.status}}</span>
                     </div>
                     <div class="column is-narrow flex-centered">
                       <div class="price-title">
@@ -75,6 +75,15 @@ export default {
   },
   fetch({store}) {
     return store.dispatch('instructor/course/fetchInstructorCourses')
+  },
+  methods: {
+    createStatusClass(status) {
+      if (!status) return ''
+      if (status === 'published') return 'is-success'
+      if (status === 'active') return 'is-primary'
+      if (status === 'inactive') return 'is-warning'
+      if (status === 'deleted') return 'is-danger'
+    }
   }
 }
 </script>
