@@ -62,8 +62,12 @@
           </div>
           <div class="column">
               <keep-alive>
-                  <component :is="activeComponent">
-                  </component>
+                  <component 
+                  @courseValueUpdate="handleCourseUpdate"
+                  :is="activeComponent" 
+                  :course="course"
+                  />
+                  
               </keep-alive>
          
           </div>
@@ -98,14 +102,22 @@ export default {
           }
       },
 
-    fetch({store, params}) {
-      return store.dispatch('instructor/course/fetchCourseById', params.id)
-         },
+     async fetch({store, params}) {
+        await store.dispatch('instructor/course/fetchCourseById', params.id)
+        await store.dispatch('category/fetchCategories')
+        },
     computed: {
     ...mapState({
       course: ({instructor}) => instructor.course.item
     })
-        }
+     } ,
+
+     methods: {
+       handleCourseUpdate({value , field}){
+         this.$store.dispatch('instructor/course/updateCourseValue' , {field , value})
+
+       }
+     }
 }
 </script>
 
