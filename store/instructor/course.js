@@ -2,7 +2,8 @@
 
 export const state = () => ({
   items: [],
-  item: {}
+  item: {},
+  canUpdateCourse: false
   })
   
   
@@ -20,10 +21,11 @@ export const state = () => ({
       },
       updateCourseValue({commit} , {value , field}){
         commit('setCourseValue', {value , field})
+        commit('setCanUpdateCourse', true)
       },
       updateLine({commit}, {index, value, field}) {
         commit('setLineValue', {index, value, field})
-        // Surprise commit for next lectures (:
+        commit('setCanUpdateCourse', true)    
       },
       fetchCourseById({commit, state}, courseId) {
         return this.$axios.$get(`/api/v1/products/${courseId}`)
@@ -31,6 +33,16 @@ export const state = () => ({
             commit('setCourse', course)
             return state.item
           })
+      },
+      updateCourse({state, commit}) {
+        const course = state.item
+        return this.$axios.$patch(`/api/v1/products/${course._id}`, course)
+          .then(course => {
+            commit('setCourse', course)
+            commit('setCanUpdateCourse', false)
+            return state.item
+          })
+          .catch(error => Promise.reject(error))
       },
   }
   
@@ -55,6 +67,9 @@ export const state = () => ({
     } ,
     setLineValue(state, {index, value, field}) {
       state.item[field][index].value = value
-  }
+  },
+  setCanUpdateCourse(state, canUpdate) {
+    state.canUpdateCourse = canUpdate
+  },
 }
   

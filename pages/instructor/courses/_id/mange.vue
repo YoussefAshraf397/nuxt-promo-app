@@ -6,7 +6,8 @@
       <template #actionMenu>
         <div class="full-page-takeover-header-button">
           <button
-            @click="() => {}"
+            @click="updateCourse"
+            :disabled="!canUpdateCourse"
             class="button is-primary is-inverted is-medium is-outlined">
             Save
           </button>
@@ -108,7 +109,8 @@ export default {
         },
     computed: {
     ...mapState({
-      course: ({instructor}) => instructor.course.item
+      course: ({instructor}) => instructor.course.item,
+      canUpdateCourse: ({instructor}) => instructor.course.canUpdateCourse
     })
      } ,
 
@@ -116,7 +118,12 @@ export default {
        handleCourseUpdate({value , field}){
          this.$store.dispatch('instructor/course/updateCourseValue' , {field , value})
 
-       }
+       },
+        updateCourse() {
+      this.$store.dispatch('instructor/course/updateCourse')
+        .then(_ => this.$toasted.success('Course has been succefuly updated!', {duration: 3000}))
+        .catch(error => this.$toasted.error('Course cannot be updated!'), {duration: 3000})
+        },
      }
 }
 </script>
