@@ -128,11 +128,11 @@ export default {
       if (field === 'category') {
         return this.emitCategory(value, field)
       }
-      return this.$emit('courseValueUpdated', {value, field})
+      return this.$emit('courseValueUpdate', {value, field})
     },
     emitCategory(categoryId, field) {
       const foundCategory = this.categories.find(c => c._id === categoryId)
-      this.$emit('courseValueUpdated', {value: foundCategory, field})
+      this.$emit('courseValueUpdate', {value: foundCategory, field})
     }
   }
 }
