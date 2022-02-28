@@ -4,6 +4,7 @@
       <template #saveButton>
         <button
           @click="emitUpdate"
+          :disabled="isSaving"
           class="button is-success button-save">
           Save
         </button>
@@ -47,6 +48,12 @@ export default {
     EditorContent,
     BubbleMenu,
     BasicMenu
+  },
+  props: {
+    isSaving: {
+      required: false,
+      default: false
+    }
   },
   data() {
     return {
@@ -92,6 +99,8 @@ export default {
         })
       ]
     })
+    // this.$emit('editorMounted', this.editor)
+    this.$emit('editorMounted', this.setInitialContent)
   },
   beforeDestroy() {
     // Always destroy your editor instance when it's no longer needed
@@ -110,6 +119,9 @@ export default {
       const node = nodes.find(n => n.type.name === name)
       if (!node) return ''
       return node.textContent
+    },
+    setInitialContent(content) {
+      this.editor.setContent(content)
     }
   }
 }
