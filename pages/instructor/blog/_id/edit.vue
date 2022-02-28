@@ -5,9 +5,10 @@
       title="Write your blog"
       exitLink="/instructor/blogs">
       <!-- TODO: Check if blog status is active -->
-      <template #actionMenu>
+      <template v-if="blog.status === 'active'" #actionMenu>
         <div class="full-page-takeover-header-button">
           <Modal
+            @submitted="updateBlogStatus($event, 'published')"
             @opened="checkBlogValidity"
             openTitle="Publish"
             openBtnClass="button is-success is-medium is-inverted is-outlined"
@@ -32,9 +33,10 @@
           </Modal>
         </div>
       </template>
-      <!-- <template v-else #actionMenu>
+      <template v-else #actionMenu>
         <div class="full-page-takeover-header-button">
           <Modal
+            @submitted="updateBlogStatus($event, 'active')"
             openTitle="Unpublish"
             openBtnClass="button is-success is-medium is-inverted is-outlined"
             title="Unpublish Blog">
@@ -43,7 +45,7 @@
             </div>
           </Modal>
         </div>
-      </template> -->
+      </template>
     </Header>
     <div class="blog-editor-container">
       <div class="container">
@@ -79,7 +81,10 @@ export default {
     ...mapState({
       blog: ({instructor}) => instructor.blog.item,
       isSaving: ({instructor}) => instructor.blog.isSaving
-    })
+    }),
+    editor() {
+      return this.$refs.editor
+    }
   },
   async fetch({params, store}) {
     await store.dispatch('instructor/blog/fetchBlogById', params.id)
@@ -98,8 +103,19 @@ export default {
         .catch(error => this.$toasted.error('Blog cannot be saved!', {duration: 2000}))
       }
     },
+    updateBlogStatus({closeModal}, status) {
+      const blogContent = this.editor.getContent()
+      blogContent.status = status
+      const message = status === 'published' ? 'Blog has been published!' : 'Blog has been un-published!'
+      this.$store.dispatch('instructor/blog/updateBlog', {data: blogContent, id: this.blog._id})
+        .then(_ => {
+          this.$toasted.success(message, {duration: 3000})
+          closeModal()
+        })
+        .catch(error => this.$toasted.error('Blog cannot be published!', {duration: 3000}))
+    },
     checkBlogValidity() {
-      const title = this.$refs.editor.getNodeValueByName('title')
+      const title = this.editor.getNodeValueByName('title')
       this.publishError = ''
       this.slug = ''
       if (title && title.length > 24) {

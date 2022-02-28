@@ -10,41 +10,74 @@
           <div class="header-block">
             <h2>Your Stories</h2>
             <div class="title-menu">
-              <button @click="() => $router.push('/instructor/blog/editor')" class="button">Write a story</button>
+              <button @click="$router.push('/instructor/blog/editor')" class="button">Write a story</button>
             </div>
           </div>
           <div class="tabs">
             <ul>
-              <li><a>Drafts</a></li>
-              <li><a>Published</a></li>
+              <!-- set here active tab -->
+              <li @click="activeTab = 0">
+                <a :class="{'is-active': activeTab === 0}">Drafts</a>
+              </li>
+              <!-- set here active tab -->
+              <li @click="activeTab = 1">
+                <a :class="{'is-active': activeTab === 1}">Published</a>
+              </li>
             </ul>
           </div>
           <div class="blogs-container">
-            <template>
-              <div>
-                <div class="blog-card">
-                  <h2>Some Title</h2>
+            <!-- Draft Blogs -->
+            <!-- check for active tab -->
+            <template v-if="activeTab === 0">
+              <div v-if="drafts && drafts.length > 0">
+                <!-- make iteration here for drafts -->
+                <div
+                  v-for="dBlog in drafts"
+                  :key="dBlog._id"
+                  class="blog-card"
+                  >
+                  <h2>{{dBlog.title}}</h2>
                   <div class="blog-card-footer">
                     <span>
-                      Last Edited 17th December, 2018
+                      Last Edited {{dBlog.updatedAt | formatDate('LLLL')}}
                     </span>
-                    <!-- Dropdown with menu here -->
-                  </div>
-                </div>
-                <div class="blog-card">
-                  <h2>Some Title</h2>
-                  <div class="blog-card-footer">
-                    <span>
-                      Last Edited 17th December, 2018
-                    </span>
-                    <!-- Dropdown with menu here -->
+                    <dropdown
+                      @optionChanged="handleOption($event, dBlog._id)"
+                      :items="draftsOptions" />
                   </div>
                 </div>
               </div>
               <!-- In case of no drafts blogs  -->
-              <!-- <div class="blog-error">
+              <div v-else class="blog-error">
                 No Drafts :(
-              </div> -->
+              </div>
+            </template>
+            <!-- Published Blogs -->
+            <!-- check for active tab -->
+            <template v-if="activeTab === 1">
+              <div v-if="published && published.length > 0">
+                <!-- make iteration here for published -->
+                <div
+                  v-for="pBlog in published"
+                  :key="pBlog._id"
+                  class="blog-card">
+                  <!-- title -->
+                  <h2>{{pBlog.title}}</h2>
+                  <div class="blog-card-footer">
+                    <!-- updatedAt -->
+                    <span>
+                      Last Edited {{pBlog.updatedAt | formatDate('LLLL')}}
+                    </span>
+                    <dropdown
+                      @optionChanged="handleOption($event, pBlog._id)"
+                      :items="publishedOptions" />
+                  </div>
+                </div>
+              </div>
+              <!-- In case of no drafts blogs  -->
+              <div v-else class="blog-error">
+                No Published Blogs :(
+              </div>
             </template>
           </div>
         </div>
@@ -54,13 +87,52 @@
 </template>
 <script>
 import Header from '~/components/shared/Header'
+import Dropdown from '~/components/shared/Dropdown'
+import { mapState } from 'vuex'
+import { createPublishedOptions,
+         createDraftsOptions,
+         commands } from '~/pages/instructor/options'
 export default {
   layout: 'instructor',
-  components: {Header}
+  components: {Header, Dropdown},
+  data() {
+    return {
+      activeTab: 0
+    }
+  },
+  computed: {
+    ...mapState({
+      published: ({instructor}) => instructor.blog.items.published,
+      drafts: ({instructor}) => instructor.blog.items.drafts
+    }),
+    publishedOptions() {
+      return createPublishedOptions()
+    },
+    draftsOptions() {
+      return createDraftsOptions()
+    }
+  },
+  async fetch({store}) {
+    await store.dispatch('instructor/blog/fetchUserBlogs')
+  },
+  methods: {
+    handleOption(command, blogId) {
+      if (command === commands.EDIT_BLOG) {
+        this.$router.push(`/instructor/blog/${blogId}/edit`)
+      }
+      if (command === commands.DELETE_BLOG) {
+        alert('Deleting Blog')
+      }
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
+  .is-active {
+    border-bottom-color: #363636;
+    color: #363636;
+  }
   .blog-error {
     font-size: 35px;
   }
