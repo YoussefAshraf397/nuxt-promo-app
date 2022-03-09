@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 
 function separateBlogs(blogs) {
   const published = []
@@ -32,7 +34,6 @@ export const actions = {
   fetchUserBlogs({commit, state}) {
     return this.$axios.$get('/api/v1/blogs/me')
       .then(blogs => {
-        debugger
         const { published, drafts } = separateBlogs(blogs)
         commit('setBlogs', {resource: 'drafts', items: drafts})
         commit('setBlogs', {resource: 'published', items: published})
@@ -41,13 +42,21 @@ export const actions = {
       })
   },
   deleteBlog({commit, state}, blog) {
-    debugger
     const resource = blog.status === 'active' ? 'drafts' : 'published'
     return this.$axios.$delete(`/api/v1/blogs/${blog._id}`)
       .then(_ => {
         const index = state.items[resource].findIndex((b) => b._id === blog._id )
         commit('deleteBlog', {resource, index})
         return true
+      })
+      .catch(error => Promise.reject(error))
+  },
+  updatePublishedBlog({commit, state}, {id, data}) {
+    return this.$axios.$patch(`/api/v1/blogs/${id}`, data)
+      .then(blog => {
+        const index = state.items['published'].findIndex(b => b._id === id)
+        commit('setPublishedBlog', {index, blog})
+        return blog
       })
       .catch(error => Promise.reject(error))
   },
@@ -70,6 +79,9 @@ export const mutations = {
   setBlog(state, blog) {
     state.item = blog
   },
+  setPublishedBlog(state, {index, blog}) {
+    Vue.set(state.items.published, index, blog)
+  },
   setBlogs(state, {resource, items}) {
     state.items[resource] = items
   },
@@ -80,3 +92,4 @@ export const mutations = {
     state.isSaving = isSaving
   }
 }
+

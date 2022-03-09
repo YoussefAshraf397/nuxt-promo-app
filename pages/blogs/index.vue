@@ -6,25 +6,17 @@
           <!-- posts -->
           <div class="column is-8">
             <!-- blog -->
-            <div class="section">
+            <div
+              v-for="blog in publishedBlogs"
+              :key="blog._id"
+              class="section">
               <div class="post">
-                <div @click="() => {}" class="post-header clickable">
-                  <h4 class="title is-4">Some Blog Title</h4>
-                  <h5 class="subtitle is-5">Some Blog Subtitle</h5>
+                <div @click="$router.push(`/blogs/${blog.slug}`)" class="post-header clickable">
+                  <h4 class="title is-4">{{blog.title}}</h4>
+                  <h5 class="subtitle is-5">{{blog.subtitle}}</h5>
                 </div>
                 <div class="post-content">
-                  by Filip Jerga, Jul 1
-                </div>
-              </div>
-            </div>
-            <div class="section">
-              <div class="post">
-                <div @click="() => {}" class="post-header clickable">
-                  <h4 class="title is-4">Some Blog Title</h4>
-                  <h5 class="subtitle is-5">Some Blog Subtitle</h5>
-                </div>
-                <div class="post-content">
-                  by Filip Jerga, Jul 1
+                  by {{blog.author.name}}, {{blog.createdAt | formatDate}}
                 </div>
               </div>
             </div>
@@ -44,8 +36,12 @@
                 </div>
                 <div class="sidebar-list">
                   <!-- Featured Blogs -->
-                  <p>
-                    <nuxt-link :to="``">Some favorite blog</nuxt-link>
+                  <p
+                    v-for="fBlog in featuredBlogs"
+                    :key="fBlog._id">
+                    <nuxt-link :to="`/blogs/${fBlog.slug}`">
+                      {{fBlog.title}}
+                    </nuxt-link>
                   </p>
                   <!-- Featured Blogs -->
                 </div>
@@ -59,7 +55,18 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState({
+      publishedBlogs: state => state.blog.items.all,
+      featuredBlogs: state => state.blog.items.featured,
+    })
+  },
+  async fetch({store}) {
+    await store.dispatch('blog/fetchBlogs')
+    await store.dispatch('blog/fetchFeaturedBlogs', {'filter[featured]': true})
+  }
 }
 </script>
 <style scoped>
