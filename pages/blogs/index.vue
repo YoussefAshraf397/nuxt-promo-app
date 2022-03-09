@@ -23,6 +23,15 @@
             <!-- end of blog -->
             <!-- pagination -->
             <div class="section">
+               <no-ssr placeholder="Loading...">
+                  <paginate
+                    :page-count="5"
+                    :click-handler="handleClick"
+                    :prev-text="'Prev'"
+                    :next-text="'Next'"
+                    :container-class="'paginationContainer'">
+                  </paginate>
+              </no-ssr>
             </div>
             <!-- end of pagination -->
           </div>
@@ -62,6 +71,11 @@ export default {
       publishedBlogs: state => state.blog.items.all,
       featuredBlogs: state => state.blog.items.featured,
     })
+  },
+    methods: {
+    handleClick() {
+      alert('Page Clicked!')
+    }
   },
   async fetch({store}) {
     await store.dispatch('blog/fetchBlogs')
