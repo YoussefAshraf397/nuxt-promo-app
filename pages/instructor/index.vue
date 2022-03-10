@@ -1,23 +1,24 @@
 <template>
   <div class="instructor-page">
- <instructor-header
+    <instructor-header
       title="Choose your admin page"
-      exitLink="/"/>    <div class="centered">
+      exitLink="/"/>
+    <div class="centered">
       <div class="columns">
         <!-- Go to /instructor/courses -->
-        <div class="box" @click="() => $router.push('/instructor/courses')">
+        <div class="box" @click="$router.push('/instructor/courses')">
           <div>
             Courses
           </div>
         </div>
         <!-- Go to /instructor/blogs -->
-        <div class="box" @click="() => $router.push('/instructor/blogs')">
+        <div class="box" @click="$router.push('/instructor/blogs')">
           <div>
             Blogs
           </div>
         </div>
         <!-- Go to /instructor/heroes -->
-        <div class="box" @click="() => {}">
+        <div class="box" @click="$router.push('/instructor/heroes')">
           <div>
             Heroes
           </div>
@@ -28,7 +29,6 @@
 </template>
 <script>
 import InstructorHeader from '~/components/shared/Header'
-
 export default {
   layout: 'instructor',
   components: {
