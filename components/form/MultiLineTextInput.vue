@@ -67,7 +67,7 @@ export default {
     canDeleteLine() {
       return this.lines.length > 1
     } ,
-    canAddLines() {
+    canAddLine() {
       return this.hasLines && this.hasLastLineValue
     }
   },
