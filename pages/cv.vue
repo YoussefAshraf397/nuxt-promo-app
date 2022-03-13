@@ -173,6 +173,14 @@
 </html>
 </template>
 
+<script>
+export default {
+  head: {
+    title: 'CV | Youssef Ashraf Awad'
+  }
+}
+</script>
+
 <style scoped lang="scss">
   html {
   box-sizing: border-box;
@@ -359,4 +367,5 @@ img.avatar {
     margin-bottom: 16px;
   }
 }
-</style>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima, obcaecati aut quas et voluptatibus dolorem similique, voluptate, totam, corrupti placeat molestiae distinctio consectetur. Et dolorum, eos, expedita debitis sed explicabo.
+</style>
+

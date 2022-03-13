@@ -5,12 +5,18 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Nuxt Promo app | Youssef Ashraf Awad',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
-    ],
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { hid: 'og:title', name: 'og:title', content: 'Software Engineer | Youssef Ashraf Awad' },
+      { hid: 'og:locale', name: 'og:locale', content: 'en_EU' },
+      { hid: 'og:url', name: 'og:url', content: process.env.BASE_URL || 'http://localhost:3000' },
+      { hid: 'og:type', name: 'og:type', content: 'website' },
+      { hid: 'og:image', name: 'og:image', content: 'https://images.unsplash.com/photo-1484417894907-623942c8ee29?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2389&q=80' },
+      { hid: 'og:description', name: 'og:description', content: 'I am a Full Stack developer with industry experience building websites and web applications. I specialize in PHP and JavaScript and have professional experience working with Laravel and Nuxt. I also have experience working with Vue and Angular. Currently, learning Go language, Docker, and Kubernetes.' },
+    ],    
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
@@ -61,6 +67,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
   serverMiddleware: [
     '~/server/routes/index'

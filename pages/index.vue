@@ -57,6 +57,9 @@ import BlogCard from '~/components/BlogCard'
 import Hero from '~/components/shared/Hero'
 import { mapState } from 'vuex'
 export default {
+   head: {
+    title: 'Online Courses and Blogs | Youssef Ashraf Awad'
+  },
   components: {
     CourseCard, BlogCard, Hero, CourseCardTooltip
   },

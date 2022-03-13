@@ -2,7 +2,7 @@
   <nav class="navbar is-active" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <nuxt-link class="navbar-item" to="/">
-        <h1 class="brand-title">Promo-Yourself</h1>
+        <h1 class="brand-title">Youssef Ashraf</h1>
       </nuxt-link>
       <!-- Adds click to open -->
       <!-- Adds active class -->
@@ -17,7 +17,7 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
-    </div>
+    </div>  
 
     <!-- Adds active class -->
     <div :class="{'is-active': isActive}"
