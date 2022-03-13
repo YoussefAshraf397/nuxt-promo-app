@@ -28,6 +28,11 @@ module.exports = {
   css: [
     '@/assets/scss/main.scss'
   ],
+  styleResources: {
+    scss: [
+      '@/assets/scss/variables.scss'
+    ]
+   },
   /*
   ** Plugins to load before mounting the App
   */
@@ -36,6 +41,7 @@ module.exports = {
     {src: '~/plugins/vuelidate'},
     {src: '~/plugins/integrations'},
     {src: '~/plugins/components'},
+    {src: '~/plugins/tooltip'},
     {src: '~/plugins/toasted', ssr: false},
     {src: '~/plugins/paginate', ssr: false}
 
@@ -47,7 +53,8 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'portal-vue/nuxt'
+    'portal-vue/nuxt',
+    '@nuxtjs/style-resources'
   ],
   /*
   ** Axios module configuration
