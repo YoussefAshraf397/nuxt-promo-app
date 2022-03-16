@@ -4,11 +4,11 @@
       <figure class="avatar">
         <img src="/me.jpeg">
       </figure>
-      <p>My name is Filip Jerga and I am an experienced software engineer and freelance developer.</p>
+      <p>My name is Youssef Ashraf Awad and I am an experienced software engineer and freelance developer.</p>
       <br>
-      <p> I have a Master's degree in Artificial Intelligence and several years of experience working on a wide range of technologies and projects from C++ development for ultrasound devices to modern mobile and web applications in React and Angular.</p>
+      <p> I have a Becholrea degree in Computer Science And Artificial Intelligence and several years of experience working on a wide range of technologies and projects from C++ , GO , PHP , JAVA development for ultrasound devices to modern web applications in NUXT and Angular.</p>
       <br>
-      <p>Throughout my career, I have acquired advanced technical knowledge and the ability to explain programming topics clearly and in detail to a broad audience. I invite you to take my course, where I have put a lot of effort to explain web and software engineering concepts in a detailed, hands-on and understandable way.</p>
+      <p>I am a Full Stack developer with industry experience building websites and web applications. I specialize in PHP and JavaScript and have professional experience working with Laravel and Nuxt. I also have experience working with Vue and Angular. Currently, learning Go language, Docker, and Kubernetes</p>
     </div>
   </div>
 </template>

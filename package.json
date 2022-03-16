@@ -43,10 +43,6 @@
     "vuejs-paginate": "^2.1.0",
     "vuelidate": "^0.7.4"
   },
-  "engines": {
-    "node": ">=10.6.0 <11.0",
-    "npm": ">=6.1.0"
-    },
   "devDependencies": {
     "node-sass": "^4.12.0",
     "nodemon": "^1.18.9",
