@@ -3,12 +3,12 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content">
-          <p class="title is-4">{{blog.title}}</p>
+          <p class="title is-4">{{blog.title | shortenText(5)}}</p>
           <p class="subtitle is-6"><i>by {{blog.author.name}}</i></p>
         </div>
       </div>
       <div class="content">
-        {{blog.subtitle}}
+        {{blog.subtitle | shortenText(5)}}
         <br>
       </div>
     </div>
